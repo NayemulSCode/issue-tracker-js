@@ -17,9 +17,15 @@ function submitIssue(e) {
   localStorage.setItem('issues', JSON.stringify(issues));
 
   document.getElementById('issueInputForm').reset();
+  totalIssue();
   fetchIssues();
   e.preventDefault();
 }
+const totalIssue = () =>{
+  const issues = JSON.parse(localStorage.getItem('issues')) || [];
+  document.getElementById('totalIssue').innerHTML = issues.length;
+}
+totalIssue();
 
 const closeIssue = id => {
   const issues = JSON.parse(localStorage.getItem('issues'));
