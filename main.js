@@ -44,11 +44,13 @@ totalOpenIssue();
 const setStatusClosed =(event, id) => {
   event.preventDefault();
   const issues = JSON.parse(localStorage.getItem('issues'));
-  const currentIssue = issues.find(issue => issue.id === id);
+  const currentIssue = issues.find(issue => issue.id == id);
   console.log('currentIssue', currentIssue);
   currentIssue.status = 'Closed';
   localStorage.setItem('issues', JSON.stringify(issues));
   fetchIssues();
+  totalOpenIssue();
+  document.getElementById(`issue-title-${id}`).style.textDecoration = "line-through";
 }
 
 const deleteIssue = id => {
