@@ -18,6 +18,7 @@ function submitIssue(e) {
 
   document.getElementById('issueInputForm').reset();
   totalIssue();
+  totalOpenIssue();
   fetchIssues();
   e.preventDefault();
 }
@@ -27,9 +28,24 @@ const totalIssue = () =>{
 }
 totalIssue();
 
-const closeIssue = id => {
+const totalOpenIssue = ()=>{
+  let openIssue = 0;
+  const issues = JSON.parse(localStorage.getItem('issues')) || [];
+  issues.forEach(element => {
+    if(element.status === 'Open'){
+      openIssue = openIssue + 1; //or
+      //openIssue +=1;
+    }
+  });
+  document.getElementById('totalOpenIssue').innerHTML = openIssue;
+}
+totalOpenIssue();
+
+const setStatusClosed =(event, id) => {
+  event.preventDefault();
   const issues = JSON.parse(localStorage.getItem('issues'));
   const currentIssue = issues.find(issue => issue.id === id);
+  console.log('currentIssue', currentIssue);
   currentIssue.status = 'Closed';
   localStorage.setItem('issues', JSON.stringify(issues));
   fetchIssues();
@@ -55,7 +71,7 @@ const fetchIssues = () => {
                               <h3> ${description} </h3>
                               <p><span class="glyphicon glyphicon-time"></span> ${severity}</p>
                               <p><span class="glyphicon glyphicon-user"></span> ${assignedTo}</p>
-                              <a href="#" onclick="setStatusClosed(${id})" class="btn btn-warning">Close</a>
+                              <a href="#" onclick="setStatusClosed(event,${id})" class="btn btn-warning">Close</a>
                               <a href="#" onclick="deleteIssue(${id})" class="btn btn-danger">Delete</a>
                               </div>`;
   }
